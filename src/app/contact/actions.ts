@@ -2,6 +2,9 @@
 
 import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { sendEmail } from '@/lib/email/transporter';
+import { getPayload } from 'payload';
+import config from '@/payload.config';
 
 export async function submitContactForm(formData: FormData) {
   const name = formData.get('name') as string;
@@ -14,6 +17,7 @@ export async function submitContactForm(formData: FormData) {
   const userType = formData.get('userType') as string;
 
   try {
+    // 1. Save to database (Prisma)
     const submission = await prisma.contactSubmission.create({
       data: {
         name,
@@ -27,8 +31,35 @@ export async function submitContactForm(formData: FormData) {
       },
     });
 
-    console.log('Form submitted successfully:', submission);
-    console.log('Sending email to: procurement@eabridgegroup.com');
+    // 2. Create In-App Notification (Payload)
+    const payload = await getPayload({ config });
+    await payload.create({
+      collection: 'notifications',
+      data: {
+        title: `New Sourcing Request from ${name}`,
+        message: `Company: ${company || 'N/A'}\nEmail: ${email}\nCommodity: ${commodity || 'N/A'}\nMessage: ${message}`,
+      },
+    });
+
+    // 3. Send Email Notification
+    await sendEmail({
+      to: 'procurement@eabridgegroup.com',
+      subject: `New Sourcing Inquiry: ${name}`,
+      html: `
+        <h2>New Sourcing Inquiry</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Company:</strong> ${company || 'N/A'}</p>
+        <p><strong>Country:</strong> ${country || 'N/A'}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || 'N/A'}</p>
+        <p><strong>Commodity:</strong> ${commodity || 'N/A'}</p>
+        <p><strong>Type:</strong> ${userType}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message}</p>
+      `,
+    });
+
+    console.log('Form processed successfully:', submission.id);
 
     revalidatePath('/contact');
     return { success: true, message: 'Thank you! Your request has been submitted.' };
