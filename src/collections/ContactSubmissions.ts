@@ -5,11 +5,11 @@ export const ContactSubmissions: CollectionConfig = {
   slug: 'contact-submissions',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'company', 'status', 'createdAt'],
+    defaultColumns: ['name', 'email', 'commodity', 'status', 'createdAt'],
   },
   access: {
     read: admin,
-    create: () => true,
+    create: () => true, // Anyone can submit
     update: admin,
     delete: admin,
   },
@@ -20,6 +20,15 @@ export const ContactSubmissions: CollectionConfig = {
       required: true,
     },
     {
+      name: 'email',
+      type: 'email',
+      required: true,
+    },
+    {
+      name: 'phone',
+      type: 'text',
+    },
+    {
       name: 'company',
       type: 'text',
     },
@@ -28,17 +37,16 @@ export const ContactSubmissions: CollectionConfig = {
       type: 'text',
     },
     {
-      name: 'email',
-      type: 'text',
-      required: true,
-    },
-    {
-      name: 'phone',
-      type: 'text',
-    },
-    {
       name: 'commodity',
       type: 'text',
+    },
+    {
+      name: 'userType',
+      type: 'select',
+      options: [
+        { label: 'Buyer', value: 'buyer' },
+        { label: 'Supplier', value: 'supplier' },
+      ],
     },
     {
       name: 'message',
@@ -46,20 +54,17 @@ export const ContactSubmissions: CollectionConfig = {
       required: true,
     },
     {
-      name: 'userType',
-      type: 'text',
-    },
-    {
       name: 'status',
       type: 'select',
-      defaultValue: 'cold',
+      defaultValue: 'hot',
       options: [
         { label: 'Hot', value: 'hot' },
         { label: 'Warm', value: 'warm' },
         { label: 'Cold', value: 'cold' },
-        { label: 'Qualified', value: 'qualified' },
-        { label: 'Closed', value: 'closed' },
       ],
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'internalNotes',

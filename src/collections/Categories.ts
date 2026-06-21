@@ -1,5 +1,5 @@
 import { CollectionConfig } from 'payload'
-import { admin, contentManager } from '../access/roles'
+import { anyone, contentManager } from '../access/roles'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -7,10 +7,10 @@ export const Categories: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {
-    read: () => true,
+    read: anyone,
     create: contentManager,
     update: contentManager,
-    delete: admin,
+    delete: contentManager,
   },
   fields: [
     {

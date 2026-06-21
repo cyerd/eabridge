@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Bell, Globe, User } from 'lucide-react'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -43,6 +43,20 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+          <div className="flex items-center space-x-4 ml-4 border-l pl-4">
+            <button className="text-slate-600 hover:text-brand-primary transition-colors p-2 rounded-full hover:bg-slate-100" title="Language Switcher">
+              <Globe className="h-5 w-5" />
+            </button>
+            <Link href="/admin/collections/notifications" className="text-slate-600 hover:text-brand-primary transition-colors p-2 rounded-full hover:bg-slate-100 relative" title="Notifications">
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-2 right-2 h-2 w-2 bg-red-500 rounded-full border border-white"></span>
+            </Link>
+          </div>
+
+          <Link href="/login" className="text-slate-600 hover:text-brand-primary transition-colors p-2 rounded-full hover:bg-slate-100" title="Login">
+            <User className="h-5 w-5" />
+          </Link>
+
           <Link href="/contact">
             <Button className="bg-brand-primary text-white hover:bg-brand-primary/90">
               Request Sourcing Support

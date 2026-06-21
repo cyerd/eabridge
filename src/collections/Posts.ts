@@ -1,20 +1,25 @@
 import { CollectionConfig } from 'payload'
-import { admin, contentManager } from '../access/roles'
+import { anyone, contentManager } from '../access/roles'
+import { logActivity, logDelete } from './hooks/activityLogger'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'status', 'createdAt'],
+    defaultColumns: ['title', 'category', 'publishedDate', 'status'],
+  },
+  access: {
+    read: anyone,
+    create: contentManager,
+    update: contentManager,
+    delete: contentManager,
   },
   versions: {
     drafts: true,
   },
-  access: {
-    read: () => true,
-    create: contentManager,
-    update: contentManager,
-    delete: admin,
+  hooks: {
+    afterChange: [logActivity('posts')],
+    afterDelete: [logDelete('posts')],
   },
   fields: [
     {
@@ -27,20 +32,10 @@ export const Posts: CollectionConfig = {
       name: 'slug',
       type: 'text',
       required: true,
+      index: true,
       admin: {
         position: 'sidebar',
       },
-    },
-    {
-      name: 'category',
-      type: 'relationship',
-      relationTo: 'categories',
-      required: true,
-    },
-    {
-      name: 'featuredImage',
-      type: 'relationship',
-      relationTo: 'media',
     },
     {
       name: 'content',
@@ -49,9 +44,32 @@ export const Posts: CollectionConfig = {
       localized: true,
     },
     {
-      name: 'excerpt',
-      type: 'textarea',
-      localized: true,
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'categories',
+      required: true,
+    },
+    {
+      name: 'tags',
+      type: 'array',
+      fields: [
+        {
+          name: 'tag',
+          type: 'text',
+        },
+      ],
+    },
+    {
+      name: 'publishedDate',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'image',
+      type: 'relationship',
+      relationTo: 'media',
     },
   ],
 }

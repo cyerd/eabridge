@@ -1,5 +1,6 @@
 import { CollectionConfig } from 'payload'
-import { admin, superAdmin, superAdminFieldAccess } from '../access/roles'
+import { admin, superAdmin, superAdminFieldAccess, adminFieldAccess } from '../access/roles'
+import { logActivity, logDelete } from './hooks/activityLogger'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -12,6 +13,10 @@ export const Users: CollectionConfig = {
     create: superAdmin,
     update: admin,
     delete: superAdmin,
+  },
+  hooks: {
+    afterChange: [logActivity('users')],
+    afterDelete: [logDelete('users')],
   },
   fields: [
     {
@@ -32,6 +37,22 @@ export const Users: CollectionConfig = {
     {
       name: 'name',
       type: 'text',
+    },
+    {
+      name: 'phone',
+      type: 'text',
+    },
+    {
+      name: 'company',
+      type: 'text',
+    },
+    {
+      name: 'isVerified',
+      type: 'checkbox',
+      defaultValue: false,
+      access: {
+        update: adminFieldAccess,
+      },
     },
   ],
 }

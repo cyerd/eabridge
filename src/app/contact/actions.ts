@@ -34,7 +34,24 @@ export async function submitContactForm(formData: FormData) {
       },
     });
 
-    // 2. Create In-App Notification
+    // 2. Save to Payload (Mini CRM)
+    const payload = await getPayload({ config });
+    await payload.create({
+      collection: 'contact-submissions',
+      data: {
+        name,
+        email,
+        phone,
+        company,
+        country,
+        commodity,
+        userType: userType.toLowerCase() as any,
+        message,
+        status: 'hot',
+      },
+    });
+
+    // 3. Create In-App Notification (Payload)
     await payload.create({
       collection: 'notifications',
       data: {
@@ -43,7 +60,7 @@ export async function submitContactForm(formData: FormData) {
       },
     });
 
-    // 3. Send Email Notification
+    // 4. Send Email Notification
     await sendEmail({
       to: 'procurement@eabridgegroup.com',
       subject: `New Sourcing Inquiry: ${name}`,

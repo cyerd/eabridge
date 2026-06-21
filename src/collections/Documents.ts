@@ -1,17 +1,24 @@
 import { CollectionConfig } from 'payload'
-import { admin, editor } from '../access/roles'
+import { admin, contentManager } from '../access/roles'
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
+  labels: {
+    singular: 'Document',
+    plural: 'Library',
+  },
   upload: {
     staticDir: 'documents',
-    mimeTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    mimeTypes: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
   },
   access: {
     read: () => true,
-    create: editor,
-    update: editor,
+    create: contentManager,
+    update: contentManager,
     delete: admin,
+  },
+  versions: {
+    drafts: true,
   },
   fields: [
     {
@@ -25,8 +32,10 @@ export const Documents: CollectionConfig = {
       options: [
         { label: 'Certificate', value: 'certificate' },
         { label: 'Report', value: 'report' },
-        { label: 'Corporate', value: 'corporate' },
+        { label: 'Policy', value: 'policy' },
+        { label: 'Other', value: 'other' },
       ],
+      required: true,
     },
   ],
 }

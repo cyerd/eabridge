@@ -1,24 +1,24 @@
 import { CollectionConfig } from 'payload'
-import { superAdmin } from '../access/roles'
+import { admin } from '../access/roles'
 
 export const ActivityLogs: CollectionConfig = {
   slug: 'activity-logs',
   admin: {
     useAsTitle: 'action',
-    defaultColumns: ['user', 'action', 'target', 'createdAt'],
+    defaultColumns: ['user', 'action', 'collectionName', 'entityId', 'createdAt'],
   },
   access: {
-    read: superAdmin,
-    create: () => true, // System-created
+    read: admin,
+    create: () => false, // Only system can create via hooks
     update: () => false,
-    delete: superAdmin,
+    delete: admin,
   },
   fields: [
     {
       name: 'user',
       type: 'relationship',
       relationTo: 'users',
-      required: true,
+      required: false, // Could be system action
     },
     {
       name: 'action',
@@ -26,8 +26,14 @@ export const ActivityLogs: CollectionConfig = {
       required: true,
     },
     {
-      name: 'target',
+      name: 'collectionName',
       type: 'text',
+      required: true,
+    },
+    {
+      name: 'entityId',
+      type: 'text',
+      required: true,
     },
     {
       name: 'details',
