@@ -12,6 +12,7 @@
     "@base-ui/react": "^1.6.0",
     "@payloadcms/db-postgres": "^3.0.0-beta.135",
     "@payloadcms/next": "^3.0.0-beta.135",
+    "@payloadcms/plugin-seo": "^3.0.0-beta.135",
     "@payloadcms/richtext-lexical": "^3.0.0-beta.135",
     "@payloadcms/ui": "^3.0.0-beta.135",
     "@prisma/client": "^7.8.0",
