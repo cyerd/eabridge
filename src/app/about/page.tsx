@@ -46,7 +46,7 @@ export default function AboutPage() {
           <div className="bg-brand-primary text-white p-8 rounded-xl shadow-lg flex flex-col justify-center">
             <h2 className="text-2xl font-bold mb-6 text-brand-secondary">Our Vision</h2>
             <p className="text-xl italic leading-relaxed text-slate-200">
-              "To become the trusted sourcing office for international buyers seeking opportunities across East Africa."
+              &quot;To become the trusted sourcing office for international buyers seeking opportunities across East Africa.&quot;
             </p>
           </div>
         </div>
