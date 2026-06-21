@@ -25,9 +25,9 @@ const Navbar = () => {
           <Image
             src="/images/horizontal.jpeg"
             alt="East Africa Bridge Group"
-            width={180}
-            height={40}
-            className="h-10 w-auto"
+            width={220}
+            height={56}
+            className="h-14 w-auto"
             priority
           />
         </Link>
@@ -38,7 +38,7 @@ const Navbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-brand-primary"
+              className="text-sm font-bold text-slate-600 transition-all hover:text-brand-secondary hover:scale-105 active:scale-95"
             >
               {link.label}
             </Link>
