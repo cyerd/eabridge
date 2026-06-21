@@ -1,7 +1,12 @@
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
+// Initialize the pg Pool and the Prisma 7 Driver Adapter
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Seeding database...");
@@ -29,7 +34,6 @@ async function main() {
   // =============================
   // CREATE PAGES
   // =============================
-
   const pages = [
     {
       title: "Home",
@@ -108,7 +112,6 @@ async function main() {
   // =============================
   // CREATE GLOBAL SETTINGS
   // =============================
-
   await prisma.globalSettings.upsert({
     where: { id: "global" },
     update: {},
@@ -143,5 +146,7 @@ main()
     process.exit(1);
   })
   .finally(async () => {
+    // Gracefully disconnect Prisma and terminate the pg pool
     await prisma.$disconnect();
+    await pool.end();
   });
