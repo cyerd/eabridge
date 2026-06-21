@@ -1,0 +1,84 @@
+
+> eabridge-app@0.1.0 dev
+> next dev --webpack
+
+▲ Next.js 16.2.9 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 519ms
+
+○ Compiling /api/[...slug] ...
+[16:26:08] [31mERROR[39m: [36mError: cannot connect to Postgres. Details: [39m
+    err: {
+      "type": "AggregateError",
+      "message": "",
+      "stack":
+          AggregateError:
+              at eval (webpack-internal:///(rsc)/./node_modules/pg-pool/index.js:45:11)
+              at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+              at async connectWithReconnect (webpack-internal:///(rsc)/./node_modules/@payloadcms/db-postgres/dist/connect.js:14:18)
+              at async Object.connect (webpack-internal:///(rsc)/./node_modules/@payloadcms/db-postgres/dist/connect.js:53:13)
+              at async BasePayload.init (webpack-internal:///(rsc)/./node_modules/payload/dist/index.js:835:13)
+              at async getPayload (webpack-internal:///(rsc)/./node_modules/payload/dist/index.js:1061:26)
+              at async createPayloadRequest (webpack-internal:///(rsc)/./node_modules/payload/dist/utilities/createPayloadRequest.js:25:21)
+              at async handleEndpoints (webpack-internal:///(rsc)/./node_modules/payload/dist/utilities/handleEndpoints.js:109:15)
+              at async eval (webpack-internal:///(rsc)/./node_modules/@payloadcms/next/dist/routes/rest/index.js:29:20)
+              at async AppRouteRouteModule.do (/app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:40131)
+              at async AppRouteRouteModule.handle (/app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:5:47411)
+              at async responseGenerator (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2F%5B...slug%5D%2Froute&page=%2Fapi%2F%5B...slug%5D%2Froute&appPaths=&allNormalizedAppPaths=&pagePath=private-next-app-dir%2Fapi%2F%5B...slug%5D%2Froute.ts&appDir=%2Fapp%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fapp&isDev=true&tsconfigPath=&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:251:38)
+              at async AppRouteRouteModule.handleResponse (/app/node_modules/next/dist/compiled/next-server/app-route.runtime.dev.js:1:228477)
+              at async handleResponse (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2F%5B...slug%5D%2Froute&page=%2Fapi%2F%5B...slug%5D%2Froute&appPaths=&allNormalizedAppPaths=&pagePath=private-next-app-dir%2Fapi%2F%5B...slug%5D%2Froute.ts&appDir=%2Fapp%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fapp&isDev=true&tsconfigPath=&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:314:32)
+              at async Module.handler (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2F%5B...slug%5D%2Froute&page=%2Fapi%2F%5B...slug%5D%2Froute&appPaths=&allNormalizedAppPaths=&pagePath=private-next-app-dir%2Fapi%2F%5B...slug%5D%2Froute.ts&appDir=%2Fapp%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fapp&isDev=true&tsconfigPath=&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!:369:13)
+              at async DevServer.renderToResponseWithComponentsImpl (/app/node_modules/next/dist/server/base-server.js:1462:9)
+              at async DevServer.renderPageComponent (/app/node_modules/next/dist/server/base-server.js:1514:24)
+              at async DevServer.renderToResponseImpl (/app/node_modules/next/dist/server/base-server.js:1564:32)
+              at async DevServer.pipeImpl (/app/node_modules/next/dist/server/base-server.js:1044:25)
+              at async NextNodeServer.handleCatchallRenderRequest (/app/node_modules/next/dist/server/next-server.js:338:17)
+              at async DevServer.handleRequestImpl (/app/node_modules/next/dist/server/base-server.js:935:17)
+              at async /app/node_modules/next/dist/server/dev/next-dev-server.js:394:20
+              at async Span.traceAsyncFn (/app/node_modules/next/dist/trace/trace.js:164:20)
+              at async DevServer.handleRequest (/app/node_modules/next/dist/server/dev/next-dev-server.js:390:24)
+              at async invokeRender (/app/node_modules/next/dist/server/lib/router-server.js:266:21)
+              at async handleRequest (/app/node_modules/next/dist/server/lib/router-server.js:465:24)
+              at async requestHandlerImpl (/app/node_modules/next/dist/server/lib/router-server.js:514:13)
+              at async Server.requestListener (/app/node_modules/next/dist/server/lib/start-server.js:225:13)
+      "aggregateErrors": [
+        {
+          "type": "Error",
+          "message": "connect ECONNREFUSED ::1:5432",
+          "stack":
+              Error: connect ECONNREFUSED ::1:5432
+                  at createConnectionError (node:net:1678:14)
+                  at afterConnectMultiple (node:net:1708:16)
+                  at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+          "errno": -111,
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "::1",
+          "port": 5432
+        },
+        {
+          "type": "Error",
+          "message": "connect ECONNREFUSED 127.0.0.1:5432",
+          "stack":
+              Error: connect ECONNREFUSED 127.0.0.1:5432
+                  at createConnectionError (node:net:1678:14)
+                  at afterConnectMultiple (node:net:1708:16)
+                  at TCPConnectWrap.callbackTrampoline (node:internal/async_hooks:130:17)
+          "errno": -111,
+          "code": "ECONNREFUSED",
+          "syscall": "connect",
+          "address": "127.0.0.1",
+          "port": 5432
+        }
+      ],
+      "code": "ECONNREFUSED"
+    }
+Error: Error: cannot connect to Postgres:
+    at ignore-listed frames {
+  payloadInitError: true
+}
+ HEAD /api/users 500 in 16.9s (next.js: 16.5s, application-code: 361ms)
+undefined
+⨯ unhandledRejection: undefined
+⨯ unhandledRejection:  undefined

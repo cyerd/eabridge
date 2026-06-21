@@ -1,0 +1,115 @@
+
+> eabridge-app@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 513ms
+
+○ Compiling /api/[...slug] ...
+⨯ ./node_modules/@esbuild/linux-x64/README.md
+Unknown module type
+This module doesn't have an associated type. Use a known file extension, or register a loader for it.
+
+Read more: https://nextjs.org/docs/app/api-reference/next-config-js/turbo#webpack-loaders
+
+
+
+./node_modules/@esbuild/linux-x64/bin/esbuild
+Reading source code for parsing failed
+An unexpected error happened while trying to read the source code to parse: failed to convert rope into string
+
+Caused by:
+- invalid utf-8 sequence of 1 bytes from index 24
+
+Import trace:
+  App Route:
+    ./node_modules/@esbuild/linux-x64/bin/esbuild
+    ./node_modules/esbuild/lib/main.js
+    ./node_modules/esbuild-register/dist/node.js
+    ./node_modules/drizzle-kit/api.js
+    ./node_modules/@payloadcms/drizzle/dist/postgres/requireDrizzleKit.js
+    ./node_modules/@payloadcms/db-postgres/dist/index.js
+    ./src/payload.config.ts
+    ./src/app/api/[...slug]/route.ts
+
+
+
+./node_modules/drizzle-kit/api.js:156545:14
+Module not found: Can't resolve ('@libsql/' <dynamic> | '@libsql/linux-x64-gnu' | '@libsql/linux-arm64-gnu')
+  [90m156543 |[0m         }
+  [90m156544 |[0m       }
+[31m[1m>[0m [90m156545 |[0m       [36mreturn[0m require([32m`@libsql/[0m${target[32m}`[0m);
+  [90m       |[0m              [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m156546 |[0m     }
+  [90m156547 |[0m     [36mvar[0m {
+  [90m156548 |[0m       databaseOpen,
+
+
+
+Import trace:
+  App Route:
+    ./node_modules/drizzle-kit/api.js
+    ./node_modules/@payloadcms/drizzle/dist/postgres/requireDrizzleKit.js
+    ./node_modules/@payloadcms/db-postgres/dist/index.js
+    ./src/payload.config.ts
+    ./src/app/api/[...slug]/route.ts
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ HEAD /api/users 500 in 12.1s (next.js: 11.8s, application-code: 306ms)
+⨯ ./node_modules/@esbuild/linux-x64/README.md
+Unknown module type
+This module doesn't have an associated type. Use a known file extension, or register a loader for it.
+
+Read more: https://nextjs.org/docs/app/api-reference/next-config-js/turbo#webpack-loaders
+
+
+
+./node_modules/@esbuild/linux-x64/bin/esbuild
+Reading source code for parsing failed
+An unexpected error happened while trying to read the source code to parse: failed to convert rope into string
+
+Caused by:
+- invalid utf-8 sequence of 1 bytes from index 24
+
+Import trace:
+  App Route:
+    ./node_modules/@esbuild/linux-x64/bin/esbuild
+    ./node_modules/esbuild/lib/main.js
+    ./node_modules/esbuild-register/dist/node.js
+    ./node_modules/drizzle-kit/api.js
+    ./node_modules/@payloadcms/drizzle/dist/postgres/requireDrizzleKit.js
+    ./node_modules/@payloadcms/db-postgres/dist/index.js
+    ./src/payload.config.ts
+    ./src/app/api/[...slug]/route.ts
+
+
+
+./node_modules/drizzle-kit/api.js:156545:14
+Module not found: Can't resolve ('@libsql/' <dynamic> | '@libsql/linux-x64-gnu' | '@libsql/linux-arm64-gnu')
+  [90m156543 |[0m         }
+  [90m156544 |[0m       }
+[31m[1m>[0m [90m156545 |[0m       [36mreturn[0m require([32m`@libsql/[0m${target[32m}`[0m);
+  [90m       |[0m              [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m156546 |[0m     }
+  [90m156547 |[0m     [36mvar[0m {
+  [90m156548 |[0m       databaseOpen,
+
+
+
+Import trace:
+  App Route:
+    ./node_modules/drizzle-kit/api.js
+    ./node_modules/@payloadcms/drizzle/dist/postgres/requireDrizzleKit.js
+    ./node_modules/@payloadcms/db-postgres/dist/index.js
+    ./src/payload.config.ts
+    ./src/app/api/[...slug]/route.ts
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+ HEAD /api/users 500 in 27ms (next.js: 15ms, application-code: 13ms)
+[?25h
