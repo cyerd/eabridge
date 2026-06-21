@@ -11,9 +11,9 @@ const Footer = () => {
               <Image
                 src="/images/horizontal.jpeg"
                 alt="East Africa Bridge Group"
-                width={180}
-                height={40}
-                className="h-10 w-auto"
+                width={220}
+                height={56}
+                className="h-14 w-auto"
               />
             </Link>
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">

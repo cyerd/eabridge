@@ -17,9 +17,6 @@ export const Commodities: CollectionConfig = {
     update: contentManager,
     delete: admin,
   },
-  versions: {
-    drafts: true,
-  },
   hooks: {
     afterChange: [logActivity('commodities')],
     afterDelete: [logDelete('commodities')],

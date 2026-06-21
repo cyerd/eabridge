@@ -6,12 +6,12 @@ import { CheckCircle2, ShieldCheck, Truck, BarChart3, Globe } from 'lucide-react
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-16 pb-16">
+    <div className="flex flex-col gap-10 pb-10">
       {/* Hero Section */}
-      <section className="relative bg-brand-primary py-20 text-white md:py-32">
+      <section className="relative bg-brand-primary py-12 text-white md:py-20 animate-in fade-in duration-1000 fill-mode-both">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
-            <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-6xl">
+            <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-6xl text-white">
               Connecting Global Buyers with Trusted East African Supply
             </h1>
             <p className="mb-8 text-lg text-slate-300 md:text-xl leading-relaxed">
@@ -30,9 +30,9 @@ export default function Home() {
       </section>
 
       {/* What We Do Section */}
-      <section className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-brand-primary">What We Do</h2>
+      <section className="container mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200 fill-mode-both">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-extrabold text-brand-primary">What We Do</h2>
           <div className="mt-2 h-1 w-20 bg-brand-secondary mx-auto"></div>
         </div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-5">
@@ -54,9 +54,9 @@ export default function Home() {
       </section>
 
       {/* Focus Commodities */}
-      <section className="bg-slate-50 py-16">
+      <section className="bg-slate-50 py-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400 fill-mode-both">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-brand-primary mb-12">Focus Commodities</h2>
+          <h2 className="text-3xl font-extrabold text-brand-primary mb-8">Focus Commodities</h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {["Sesame Seeds", "Green Grams (Mung Beans)", "Pigeon Peas", "Kidney Beans"].map((item, idx) => (
               <div key={idx} className="bg-white p-6 rounded-lg shadow-sm border border-slate-100 flex items-center justify-center font-semibold text-brand-primary">
@@ -68,8 +68,8 @@ export default function Home() {
       </section>
 
       {/* Origins and Markets */}
-      <section className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+      <section className="container mx-auto px-4 py-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-600 fill-mode-both">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div>
             <h2 className="text-2xl font-bold text-brand-primary mb-6 border-l-4 border-brand-secondary pl-4">Key Origins</h2>
             <ul className="space-y-4">
@@ -96,10 +96,10 @@ export default function Home() {
       </section>
 
       {/* Our Approach */}
-      <section className="bg-slate-50 py-16">
+      <section className="bg-slate-50 py-12 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-800 fill-mode-both">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-brand-primary">Our Approach</h2>
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-extrabold text-brand-primary">Our Approach</h2>
             <div className="mt-2 h-1 w-20 bg-brand-secondary mx-auto"></div>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -132,7 +132,7 @@ export default function Home() {
       </section>
 
       {/* Final CTA */}
-      <section className="container mx-auto px-4 text-center">
+      <section className="container mx-auto px-4 text-center animate-in fade-in zoom-in duration-1000 delay-1000 fill-mode-both">
         <div className="bg-brand-primary rounded-2xl p-12 text-white shadow-xl">
           <h2 className="text-3xl font-bold mb-6">Looking for reliable sourcing support in East Africa?</h2>
           <p className="text-xl text-slate-300 mb-8 font-medium">Contact East Africa Bridge Group today</p>

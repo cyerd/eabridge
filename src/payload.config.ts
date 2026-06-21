@@ -31,7 +31,7 @@ export default buildConfig({
   editor: lexicalEditor({}),
   plugins: [
     seoPlugin({
-      collections: ['commodities'],
+      collections: ['posts', 'commodities'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }: any) => `East Africa Bridge Group | ${doc?.name || doc?.title || 'Page'}`,
       generateDescription: ({ doc }: any) => doc?.description || doc?.message || 'Connecting global buyers with trusted East African supply.',
@@ -61,27 +61,4 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL,
     },
   }),
-  localization: {
-    locales: [
-      {
-        label: 'English',
-        code: 'en',
-      },
-      {
-        label: 'Arabic',
-        code: 'ar',
-        rtl: true,
-      },
-    ],
-    defaultLocale: 'en',
-    fallback: true,
-  },
-  plugins: [
-    seoPlugin({
-      collections: ['posts', 'commodities'],
-      uploadsCollection: 'media',
-      generateTitle: ({ doc }: any) => `East Africa Bridge Group | \${doc.title || doc.name}`,
-      generateDescription: ({ doc }: any) => doc.excerpt || doc.description,
-    }),
-  ],
 })
