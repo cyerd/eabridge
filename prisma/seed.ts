@@ -1,79 +1,128 @@
+import { loadEnvConfig } from '@next/env';
+const projectDir = process.cwd();
+loadEnvConfig(projectDir);
+
+import { getPayload } from 'payload';
+import config from '../src/payload.config';
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
-import bcrypt from "bcryptjs";
 
-// Initialize the pg Pool and the Prisma 7 Driver Adapter
+// Initialize the pg Pool and the Prisma 7 Driver Adapter for non-Payload models if any
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.log("🌱 Seeding database via Payload Local API...");
+
+  const payload = await getPayload({ config });
 
   // =============================
   // CREATE SUPER ADMIN
   // =============================
-  const hashedPassword = await bcrypt.hash("Admin@1234", 10);
-
-  const superAdmin = await prisma.user.upsert({
-    where: { email: "admin@eabridgegroup.com" },
-    update: {},
-    create: {
-      email: "admin@eabridgegroup.com",
-      password: hashedPassword,
-      role: "super-admin",
-      name: "Super Admin",
+  const adminEmail = "admin@eabridgegroup.com";
+  const existingAdmin = await payload.find({
+    collection: 'users',
+    where: {
+      email: {
+        equals: adminEmail,
+      },
     },
   });
 
-  console.log("✅ Super Admin created:");
-  console.log("Email: admin@eabridgegroup.com");
-  console.log("Password: Admin@1234");
+  if (existingAdmin.totalDocs === 0) {
+    await payload.create({
+      collection: 'users',
+      data: {
+        email: adminEmail,
+        password: "Admin@1234",
+        role: "super-admin",
+        name: "Super Admin",
+        isVerified: true,
+      },
+    });
+    console.log("✅ Super Admin created: admin@eabridgegroup.com / Admin@1234");
+  } else {
+    console.log("ℹ️ Super Admin already exists.");
+  }
 
   // =============================
-  // CREATE PAGES
+  // CREATE CATEGORIES
+  // =============================
+  const categories = ["Grains", "Oilseeds", "Pulses", "Spices"];
+  const categoryIds: Record<string, string> = {};
+
+  for (const catName of categories) {
+    const existing = await payload.find({
+      collection: 'categories',
+      where: { name: { equals: catName } },
+    });
+
+    if (existing.totalDocs === 0) {
+      const cat = await payload.create({
+        collection: 'categories',
+        data: { name: catName },
+      });
+      categoryIds[catName] = cat.id;
+      console.log(`✅ Category created: ${catName}`);
+    } else {
+      categoryIds[catName] = existing.docs[0].id;
+      console.log(`ℹ️ Category already exists: ${catName}`);
+    }
+  }
+
+  // =============================
+  // CREATE COMMODITIES
+  // =============================
+  const commodities = [
+    { name: "Sesame Seeds", description: "High-quality sesame seeds sourced from East Africa." },
+    { name: "Green Grams", description: "Premium green grams for international markets." },
+    { name: "Pigeon Peas", description: "Export-grade pigeon peas." },
+    { name: "Kidney Beans", description: "Nutritious kidney beans from local farmers." },
+  ];
+
+  for (const item of commodities) {
+    const existing = await payload.find({
+      collection: 'commodities',
+      where: { name: { equals: item.name } },
+    });
+
+    if (existing.totalDocs === 0) {
+      await payload.create({
+        collection: 'commodities',
+        data: item,
+      });
+      console.log(`✅ Commodity created: ${item.name}`);
+    } else {
+      console.log(`ℹ️ Commodity already exists: ${item.name}`);
+    }
+  }
+
+  // =============================
+  // CREATE EMAIL SETTINGS (GLOBAL)
+  // =============================
+  await payload.updateGlobal({
+    slug: 'email-settings',
+    data: {
+      smtpHost: "smtp.example.com",
+      smtpPort: 587,
+      smtpUser: "procurement@eabridgegroup.com",
+      smtpPassword: "password123",
+      fromEmail: "noreply@eabridgegroup.com",
+      fromName: "East Africa Bridge Group",
+      encryption: "tls",
+      testEmailAddress: adminEmail,
+    },
+  });
+  console.log("✅ Email settings seeded.");
+
+  // =============================
+  // SEED PAGES (VIA PRISMA SINCE THEY ARE NOT MANAGED BY PAYLOAD IN CONFIG)
   // =============================
   const pages = [
-    {
-      title: "Home",
-      slug: "home",
-      content: {
-        hero: {
-          headline: "Connecting Global Buyers with Trusted East African Supply",
-          subheadline:
-            "East Africa Bridge Group is a procurement, sourcing, and market access platform connecting international buyers with qualified suppliers across East Africa.",
-        },
-      },
-    },
-    {
-      title: "About",
-      slug: "about",
-      content: {
-        description:
-          "East Africa Bridge Group connects global buyers with trusted East African suppliers.",
-      },
-    },
-    {
-      title: "Services",
-      slug: "services",
-      content: {},
-    },
-    {
-      title: "Commodities",
-      slug: "commodities",
-      content: {},
-    },
-    {
-      title: "Markets",
-      slug: "markets",
-      content: {},
-    },
-    {
-      title: "Contact",
-      slug: "contact",
-      content: {},
-    },
+    { title: "Home", slug: "home", content: { hero: { headline: "Connecting Global Buyers..." } } },
+    { title: "About", slug: "about", content: { description: "About us..." } },
   ];
 
   for (const page of pages) {
@@ -83,59 +132,7 @@ async function main() {
       create: page,
     });
   }
-
-  console.log("✅ Pages seeded");
-
-  // =============================
-  // CREATE COMMODITIES
-  // =============================
-  const commodities = [
-    "Sesame Seeds",
-    "Green Grams",
-    "Pigeon Peas",
-    "Kidney Beans",
-  ];
-
-  for (const name of commodities) {
-    await prisma.commodity.upsert({
-      where: { name },
-      update: {},
-      create: {
-        name,
-        description: `${name} sourced from East Africa.`,
-      },
-    });
-  }
-
-  console.log("✅ Commodities seeded");
-
-  // =============================
-  // CREATE GLOBAL SETTINGS
-  // =============================
-  await prisma.globalSettings.upsert({
-    where: { id: "global" },
-    update: {},
-    create: {
-      id: "global",
-      siteName: "East Africa Bridge Group",
-      tagline: "Procurement, Sourcing & Market Access Platform",
-      email: "procurement@eabridgegroup.com",
-    },
-  });
-
-  console.log("✅ Global settings seeded");
-
-  // =============================
-  // CREATE SAMPLE NOTIFICATION
-  // =============================
-  await prisma.notification.create({
-    data: {
-      title: "Welcome",
-      message: "System initialized successfully",
-    },
-  });
-
-  console.log("✅ Notifications seeded");
+  console.log("✅ Pages seeded via Prisma.");
 
   console.log("🎉 Seeding complete!");
 }
@@ -146,7 +143,6 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    // Gracefully disconnect Prisma and terminate the pg pool
     await prisma.$disconnect();
     await pool.end();
   });

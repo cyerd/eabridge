@@ -6,17 +6,206 @@ datasource db {
   provider = "postgresql"
 }
 
-model ContactSubmission {
+// --- PRIMARY COLLECTIONS ---
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  role          String    @default("editor")
+  name          String?
+  phone         String?
+  company       String?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model UserSession {
+  id        String   @id @default(uuid())
+  user      String
+  expires   DateTime
+  @@map("users_sessions")
+}
+
+model Media {
+  id        String   @id @default(uuid())
+  alt       String
+  filename  String?
+  mimeType  String?
+  filesize  Int?
+  width     Int?
+  height    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("media")
+}
+
+model Commodity {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  origins     String?
+  grades      String?
+  packaging   String?
+  markets     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("commodities")
+}
+
+model CommodityLocale {
+  id          String @id @default(uuid())
+  locale      String @map("_locale")
+  parentId    String @map("_parent_id")
+  name        String?
+  description String?
+  origins     String?
+  grades      String?
+  packaging   String?
+  markets     String?
+
+  @@map("commodities_locales")
+}
+
+model CommodityVersion {
+  id         String   @id @default(uuid())
+  parentId   String   @map("parent_id")
+  version    Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  snapshot   Boolean?
+
+  @@map("_commodities_v")
+}
+
+model CommodityVersionLocale {
+  id         String @id @default(uuid())
+  locale     String @map("_locale")
+  parentId   String @map("_parent_id")
+
+  @@map("_commodities_v_locales")
+}
+
+model Category {
   id        String   @id @default(uuid())
   name      String
-  company   String?
-  country   String?
-  email     String
-  phone     String?
-  commodity String?
-  message   String
-  userType  String   // Buyer or Supplier
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model CategoryLocale {
+  id         String @id @default(uuid())
+  locale     String @map("_locale")
+  parentId   String @map("_parent_id")
+  name       String?
+
+  @@map("categories_locales")
+}
+
+model Post {
+  id            String    @id @default(uuid())
+  title         String
+  slug          String    @unique
+  content       Json
+  publishedDate DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("posts")
+}
+
+model PostTag {
+  id         String @id @default(uuid())
+  order      Int    @map("_order")
+  parentId   String @map("_parent_id")
+  tag        String?
+
+  @@map("posts_tags")
+}
+
+model PostLocale {
+  id         String @id @default(uuid())
+  locale     String @map("_locale")
+  parentId   String @map("_parent_id")
+  title      String?
+  content    Json?
+
+  @@map("posts_locales")
+}
+
+model PostVersion {
+  id         String   @id @default(uuid())
+  parentId   String   @map("parent_id")
+  version    Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  snapshot   Boolean?
+
+  @@map("_posts_v")
+}
+
+model PostVersionTag {
+  id         String @id @default(uuid())
+  order      Int    @map("_order")
+  parentId   String @map("_parent_id")
+  tag        String?
+
+  @@map("_posts_v_version_tags")
+}
+
+model PostVersionLocale {
+  id         String @id @default(uuid())
+  locale     String @map("_locale")
+  parentId   String @map("_parent_id")
+
+  @@map("_posts_v_locales")
+}
+
+model Document {
+  id        String   @id @default(uuid())
+  title     String
+  category  String
+  filename  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("documents")
+}
+
+model DocumentVersion {
+  id         String   @id @default(uuid())
+  parentId   String   @map("parent_id")
+  version    Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  snapshot   Boolean?
+
+  @@map("_documents_v")
+}
+
+model ContactSubmission {
+  id            String   @id @default(uuid())
+  name          String
+  email         String
+  phone         String?
+  company       String?
+  country       String?
+  commodity     String?
+  userType      String?
+  message       String
+  status        String   @default("hot")
+  internalNotes String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("contact_submissions")
 }
 
 model Notification {
@@ -26,16 +215,21 @@ model Notification {
   userId    String?
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notifications")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      String
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model ActivityLog {
+  id             String   @id @default(uuid())
+  action         String
+  collectionName String
+  entityId       String
+  details        Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("activity_logs")
 }
 
 model Page {
@@ -45,21 +239,73 @@ model Page {
   content   Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("pages")
 }
 
-model Commodity {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+// --- GLOBALS ---
+
+model EmailSettings {
+  id               String   @id @default(uuid())
+  smtpHost         String
+  smtpPort         Int
+  smtpUser         String
+  smtpPassword     String
+  fromEmail        String
+  fromName         String
+  encryption       String   @default("tls")
+  testEmailAddress String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("email_settings")
 }
 
-model GlobalSettings {
-  id        String   @id @unique
-  siteName  String
-  tagline   String?
-  email     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+// --- PAYLOAD INTERNAL TABLES ---
+
+model PayloadKV {
+  id    String @id @default(uuid())
+  key   String @unique
+  value Json
+  @@map("payload_kv")
+}
+
+model PayloadLockedDocument {
+  id            String @id @default(uuid())
+  collection    String
+  documentId    String @map("document_id")
+  @@map("payload_locked_documents")
+}
+
+model PayloadLockedDocumentRel {
+  id         String @id @default(uuid())
+  order      Int    @map("_order")
+  parentId   String @map("_parent_id")
+  path       String
+  @@map("payload_locked_documents_rels")
+}
+
+model PayloadPreference {
+  id             String @id @default(uuid())
+  userId         String @map("user_id")
+  userCollection String @map("user_collection")
+  key            String
+  value          Json
+  @@map("payload_preferences")
+}
+
+model PayloadPreferenceRel {
+  id         String @id @default(uuid())
+  order      Int    @map("_order")
+  parentId   String @map("_parent_id")
+  path       String
+  @@map("payload_preferences_rels")
+}
+
+model PayloadMigration {
+  id      String   @id @default(uuid())
+  name    String
+  batch   Int
+  updatedAt DateTime @default(now())
+  @@map("payload_migrations")
 }
