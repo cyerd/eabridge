@@ -1,6 +1,5 @@
 'use server';
 
-import prisma from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { sendEmail } from '@/lib/email/transporter';
 import { getPayload } from 'payload';
@@ -17,8 +16,11 @@ export async function submitContactForm(formData: FormData) {
   const userType = formData.get('userType') as string;
 
   try {
-    // 1. Save to database (Prisma)
-    const submission = await prisma.contactSubmission.create({
+    const payload = await getPayload({ config });
+
+    // 1. Save to CMS (Mini CRM)
+    const submission = await payload.create({
+      collection: 'contact-submissions',
       data: {
         name,
         company,
@@ -28,6 +30,7 @@ export async function submitContactForm(formData: FormData) {
         commodity,
         message,
         userType,
+        status: 'cold',
       },
     });
 
