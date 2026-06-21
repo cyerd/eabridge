@@ -8,16 +8,20 @@
     "start": "next start",
     "lint": "eslint"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@payloadcms/db-postgres": "^3.0.0-beta.135",
     "@payloadcms/next": "^3.0.0-beta.135",
-    "@payloadcms/plugin-seo": "^3.0.0-beta.135",
     "@payloadcms/plugin-seo": "^3.85.1",
     "@payloadcms/richtext-lexical": "^3.0.0-beta.135",
     "@payloadcms/ui": "^3.0.0-beta.135",
     "@prisma/client": "^7.8.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/nodemailer": "^8.0.1",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cli-color": "^2.0.4",
     "clsx": "^2.1.1",
@@ -45,6 +49,7 @@
     "eslint": "^9",
     "eslint-config-next": "^15.1.0",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }
