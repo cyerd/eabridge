@@ -2,6 +2,7 @@ import React from 'react'
 import config from '@/payload.config'
 import { RootLayout } from '@payloadcms/next/layouts'
 import { importMap } from './admin/importMap'
+import { serverFunction } from './actions'
 import './custom.scss'
 
 type Args = {
@@ -9,7 +10,7 @@ type Args = {
 }
 
 const Layout = ({ children }: Args) => (
-  <RootLayout config={config} importMap={importMap} serverFunction={async () => {}}>
+  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
     {children}
   </RootLayout>
 )
