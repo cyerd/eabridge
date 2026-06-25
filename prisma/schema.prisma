@@ -9,59 +9,58 @@ datasource db {
 // --- PRIMARY COLLECTIONS ---
 
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  password      String
-  role          String    @default("editor")
-  name          String?
-  phone         String?
-  company       String?
-  isVerified    Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                      Int       @id @default(autoincrement())
+  email                   String    @unique
+  hash                    String
+  salt                    String?
+  role                    String    @default("editor")
+  name                    String?
+  phone                   String?
+  company                 String?
+  isVerified              Boolean   @default(false) @map("is_verified")
+  loginAttempts           Int?      @default(0) @map("login_attempts")
+  lockUntil               DateTime? @map("lock_until")
+  resetPasswordToken      String?   @map("reset_password_token")
+  resetPasswordExpiration DateTime? @map("reset_password_expiration")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model UserSession {
-  id        String   @id @default(uuid())
-  user      String
+  id        Int      @id @default(autoincrement())
+  user      Int
   expires   DateTime
   @@map("users_sessions")
 }
 
 model Media {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   alt       String
   filename  String?
-  mimeType  String?
+  mimeType  String?  @map("mime_type")
   filesize  Int?
   width     Int?
   height    Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("media")
 }
 
 model Commodity {
-  id          String   @id @default(uuid())
-  name        String
-  description String?
-  origins     String?
-  grades      String?
-  packaging   String?
-  markets     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("commodities")
 }
 
 model CommodityLocale {
-  id          String @id @default(uuid())
+  id          Int    @id @default(autoincrement())
   locale      String @map("_locale")
-  parentId    String @map("_parent_id")
+  parentId    Int    @map("_parent_id")
   name        String?
   description String?
   origins     String?
@@ -73,67 +72,66 @@ model CommodityLocale {
 }
 
 model CommodityVersion {
-  id         String   @id @default(uuid())
-  parentId   String   @map("parent_id")
+  id         Int      @id @default(autoincrement())
+  parentId   Int      @map("parent_id")
   version    Json
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
   snapshot   Boolean?
 
   @@map("_commodities_v")
 }
 
 model CommodityVersionLocale {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   locale     String @map("_locale")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
 
   @@map("_commodities_v_locales")
 }
 
 model Category {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("categories")
 }
 
 model CategoryLocale {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   locale     String @map("_locale")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   name       String?
 
   @@map("categories_locales")
 }
 
 model Post {
-  id            String    @id @default(uuid())
-  title         String
+  id            Int       @id @default(autoincrement())
   slug          String    @unique
-  content       Json
-  publishedDate DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  categoryId    Int?      @map("category_id")
+  imageId       Int?      @map("image_id")
+  publishedDate DateTime? @map("published_date")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
 
   @@map("posts")
 }
 
 model PostTag {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   order      Int    @map("_order")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   tag        String?
 
   @@map("posts_tags")
 }
 
 model PostLocale {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   locale     String @map("_locale")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   title      String?
   content    Json?
 
@@ -141,104 +139,104 @@ model PostLocale {
 }
 
 model PostVersion {
-  id         String   @id @default(uuid())
-  parentId   String   @map("parent_id")
+  id         Int      @id @default(autoincrement())
+  parentId   Int      @map("parent_id")
   version    Json
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
   snapshot   Boolean?
 
   @@map("_posts_v")
 }
 
 model PostVersionTag {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   order      Int    @map("_order")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   tag        String?
 
   @@map("_posts_v_version_tags")
 }
 
 model PostVersionLocale {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   locale     String @map("_locale")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
 
   @@map("_posts_v_locales")
 }
 
 model Document {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   title     String
   category  String
   filename  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("documents")
 }
 
 model DocumentVersion {
-  id         String   @id @default(uuid())
-  parentId   String   @map("parent_id")
+  id         Int      @id @default(autoincrement())
+  parentId   Int      @map("parent_id")
   version    Json
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
   snapshot   Boolean?
 
   @@map("_documents_v")
 }
 
 model ContactSubmission {
-  id            String   @id @default(uuid())
+  id            Int      @id @default(autoincrement())
   name          String
   email         String
   phone         String?
   company       String?
   country       String?
   commodity     String?
-  userType      String?
+  userType      String?  @map("user_type")
   message       String
   status        String   @default("hot")
-  internalNotes String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  internalNotes String?  @map("internal_notes")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("contact_submissions")
 }
 
 model Notification {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   title     String
   message   String
-  userId    String?
+  userId    String?  @map("user_id")
   read      Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("notifications")
 }
 
 model ActivityLog {
-  id             String   @id @default(uuid())
+  id             Int      @id @default(autoincrement())
   action         String
-  collectionName String
-  entityId       String
+  collectionName String   @map("collection_name")
+  entityId       String   @map("entity_id")
   details        Json?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   @@map("activity_logs")
 }
 
 model Page {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   title     String
   slug      String   @unique
   content   Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("pages")
 }
@@ -246,17 +244,17 @@ model Page {
 // --- GLOBALS ---
 
 model EmailSettings {
-  id               String   @id @default(uuid())
-  smtpHost         String
-  smtpPort         Int
-  smtpUser         String
-  smtpPassword     String
-  fromEmail        String
-  fromName         String
+  id               Int      @id @default(autoincrement())
+  smtpHost         String   @map("smtp_host")
+  smtpPort         Int      @map("smtp_port")
+  smtpUser         String   @map("smtp_user")
+  smtpPassword     String   @map("smtp_password")
+  fromEmail        String   @map("from_email")
+  fromName         String   @map("from_name")
   encryption       String   @default("tls")
-  testEmailAddress String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  testEmailAddress String?  @map("test_email_address")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   @@map("email_settings")
 }
@@ -264,30 +262,30 @@ model EmailSettings {
 // --- PAYLOAD INTERNAL TABLES ---
 
 model PayloadKV {
-  id    String @id @default(uuid())
+  id    Int    @id @default(autoincrement())
   key   String @unique
   value Json
   @@map("payload_kv")
 }
 
 model PayloadLockedDocument {
-  id            String @id @default(uuid())
+  id            Int    @id @default(autoincrement())
   collection    String
   documentId    String @map("document_id")
   @@map("payload_locked_documents")
 }
 
 model PayloadLockedDocumentRel {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   order      Int    @map("_order")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   path       String
   @@map("payload_locked_documents_rels")
 }
 
 model PayloadPreference {
-  id             String @id @default(uuid())
-  userId         String @map("user_id")
+  id             Int    @id @default(autoincrement())
+  userId         Int?   @map("user_id")
   userCollection String @map("user_collection")
   key            String
   value          Json
@@ -295,17 +293,17 @@ model PayloadPreference {
 }
 
 model PayloadPreferenceRel {
-  id         String @id @default(uuid())
+  id         Int    @id @default(autoincrement())
   order      Int    @map("_order")
-  parentId   String @map("_parent_id")
+  parentId   Int    @map("_parent_id")
   path       String
   @@map("payload_preferences_rels")
 }
 
 model PayloadMigration {
-  id      String   @id @default(uuid())
-  name    String
-  batch   Int
-  updatedAt DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  batch     Int
+  updatedAt DateTime @default(now()) @map("updated_at")
   @@map("payload_migrations")
 }

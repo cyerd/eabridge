@@ -51,7 +51,6 @@ async function main() {
   // CREATE CATEGORIES
   // =============================
   const categories = ["Grains", "Oilseeds", "Pulses", "Spices"];
-  const categoryIds: Record<string, string> = {};
 
   for (const catName of categories) {
     const existing = await payload.find({
@@ -60,14 +59,12 @@ async function main() {
     });
 
     if (existing.totalDocs === 0) {
-      const cat = await payload.create({
+      await payload.create({
         collection: 'categories',
         data: { name: catName },
       });
-      categoryIds[catName] = cat.id;
       console.log(`✅ Category created: ${catName}`);
     } else {
-      categoryIds[catName] = existing.docs[0].id;
       console.log(`ℹ️ Category already exists: ${catName}`);
     }
   }
