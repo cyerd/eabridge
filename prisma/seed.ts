@@ -1,20 +1,26 @@
-import { loadEnvConfig } from '@next/env';
-const projectDir = process.cwd();
-loadEnvConfig(projectDir);
-
 import { getPayload } from 'payload';
-import config from '../src/payload.config';
-import { PrismaClient } from "@prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
+import config from '../src/payload.config.js';
+import pkgPrisma from "@prisma/client";
+const { PrismaClient } = pkgPrisma;
+import * as pkgAdapter from "@prisma/adapter-pg";
+const { PrismaPg } = pkgAdapter;
 import pg from "pg";
+import * as dotenv from 'dotenv';
+import path from 'path';
 
-// Initialize the pg Pool and the Prisma 7 Driver Adapter for non-Payload models if any
+// Load environment variables manually
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+
+// Initialize the pg Pool and the Prisma 7 Driver Adapter
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("🌱 Seeding database via Payload Local API...");
+
+  // Bypassing loadEnv issues by providing minimal required env
+  if (!process.env.PAYLOAD_SECRET) process.env.PAYLOAD_SECRET = 'YOUR_SECRET_HERE';
 
   const payload = await getPayload({ config });
 
@@ -115,7 +121,7 @@ async function main() {
   console.log("✅ Email settings seeded.");
 
   // =============================
-  // SEED PAGES (VIA PRISMA SINCE THEY ARE NOT MANAGED BY PAYLOAD IN CONFIG)
+  // SEED PAGES (VIA PRISMA)
   // =============================
   const pages = [
     { title: "Home", slug: "home", content: { hero: { headline: "Connecting Global Buyers..." } } },
