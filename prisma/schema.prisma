@@ -72,12 +72,14 @@ model CommodityLocale {
 }
 
 model CommodityVersion {
-  id         Int      @id @default(autoincrement())
-  parentId   Int      @map("parent_id")
-  version    Json
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  snapshot   Boolean?
+  id               Int      @id @default(autoincrement())
+  parentId         Int      @map("parent_id")
+  version          Json
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  versionCreatedAt DateTime @default(now()) @map("version_created_at")
+  versionUpdatedAt DateTime @updatedAt @map("version_updated_at")
+  snapshot         Boolean?
 
   @@map("_commodities_v")
 }
@@ -139,12 +141,14 @@ model PostLocale {
 }
 
 model PostVersion {
-  id         Int      @id @default(autoincrement())
-  parentId   Int      @map("parent_id")
-  version    Json
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  snapshot   Boolean?
+  id               Int      @id @default(autoincrement())
+  parentId         Int      @map("parent_id")
+  version          Json
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  versionCreatedAt DateTime @default(now()) @map("version_created_at")
+  versionUpdatedAt DateTime @updatedAt @map("version_updated_at")
+  snapshot         Boolean?
 
   @@map("_posts_v")
 }
@@ -178,12 +182,14 @@ model Document {
 }
 
 model DocumentVersion {
-  id         Int      @id @default(autoincrement())
-  parentId   Int      @map("parent_id")
-  version    Json
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
-  snapshot   Boolean?
+  id               Int      @id @default(autoincrement())
+  parentId         Int      @map("parent_id")
+  version          Json
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  versionCreatedAt DateTime @default(now()) @map("version_created_at")
+  versionUpdatedAt DateTime @updatedAt @map("version_updated_at")
+  snapshot         Boolean?
 
   @@map("_documents_v")
 }
